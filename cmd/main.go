@@ -23,6 +23,13 @@ func main() {
 	}
 
 	ctrl := handler.New(db, pubSubSrv)
+	go func() {
+		err := ctrl.Listen(ctx)
+		if err != nil {
+			log.Fatalln(err)
+		}
+	}()
+
 	lis, err := net.Listen("tcp", "127.0.0.1:50050")
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
